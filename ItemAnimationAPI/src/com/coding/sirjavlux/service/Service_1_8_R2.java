@@ -3,12 +3,10 @@ package com.coding.sirjavlux.service;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R2.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -81,24 +79,6 @@ public class Service_1_8_R2 implements ServiceWrapper {
                 1,
                 pitch);
         sendPacket(soundEffect, player);
-    }
-    @Override
-    public void changeChest(Player player, Block block, boolean open) {
-        PacketPlayOutBlockAction blockAction = null;
-        try {
-            blockAction = new PacketPlayOutBlockAction(
-                    new BlockPosition(
-                            block.getLocation().getBlockX(),
-                            block.getLocation().getBlockY(),
-                            block.getLocation().getBlockZ()),
-                    CraftMagicNumbers.getBlock(block),
-                    1,
-                    open ? 1 : 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        sendPacket(blockAction, player);
     }
     @Override
     public void explode(Player player, Location location) {

@@ -3,22 +3,22 @@ package com.coding.sirjavlux.service;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.coding.sirjavlux.entity.CustomEntityBat;
-import com.coding.sirjavlux.entity.CustomEntityBat_1_8_R3;
+import com.coding.sirjavlux.entity.CustomEntityBat_1_7_R1;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_7_R1.*;
 
-public class Service_1_8_R3 implements ServiceWrapper {
+public class Service_1_7_R1 implements ServiceWrapper {
     @Override
     public CustomEntityBat spawnBat(Player player, Location location) {
-        CustomEntityBat bat = new CustomEntityBat_1_8_R3(location);
+        CustomEntityBat bat = new CustomEntityBat_1_7_R1(location);
         Entity entity = ((CraftEntity) bat.getBukkitEntity()).getHandle();
         entity.setLocation(location.getX(), location.getY(), location.getZ(), 0, 0);
         PacketPlayOutSpawnEntityLiving spawnEntity = new PacketPlayOutSpawnEntityLiving((EntityLiving) entity);
@@ -62,8 +62,7 @@ public class Service_1_8_R3 implements ServiceWrapper {
     @Override
     public void sendParticle(Player player, Location location, String particleName) {
         PacketPlayOutWorldParticles particle = new PacketPlayOutWorldParticles(
-                EnumParticle.valueOf(particleName.toUpperCase()),
-                true,
+                particleName.toUpperCase(),
                 (float) location.getX(),
                 (float) location.getY(),
                 (float) location.getZ(),
@@ -88,12 +87,11 @@ public class Service_1_8_R3 implements ServiceWrapper {
                 location.getZ(),
                 4,
                 new ArrayList<>(),
-                new Vec3D(0, 0, 0)
+                Vec3D.a(0, 0, 0)
         );
         sendPacket(explosion, player);
     }
     
-    @SuppressWarnings("rawtypes")
 	public void sendPacket(Packet packet, Player player) {
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }

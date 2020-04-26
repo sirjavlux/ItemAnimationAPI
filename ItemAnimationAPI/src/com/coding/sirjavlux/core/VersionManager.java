@@ -3,6 +3,10 @@ package com.coding.sirjavlux.core;
 import org.bukkit.Bukkit;
 
 import com.coding.sirjavlux.entity.*;
+import com.coding.sirjavlux.registry.RegisterEntity_1_7_R1;
+import com.coding.sirjavlux.registry.RegisterEntity_1_7_R2;
+import com.coding.sirjavlux.registry.RegisterEntity_1_7_R3;
+import com.coding.sirjavlux.registry.RegisterEntity_1_7_R4;
 import com.coding.sirjavlux.registry.RegisterEntity_1_8_R1;
 import com.coding.sirjavlux.registry.RegisterEntity_1_8_R2;
 import com.coding.sirjavlux.registry.RegisterEntity_1_8_R3;
@@ -15,8 +19,25 @@ public class VersionManager {
 	
 	public VersionManager() {
 		this.version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3].substring(1);
+		System.out.println(version);
 		
 		switch (version) {
+		case "1_7_R1": 
+			RegisterEntity_1_7_R1.registerEntity("Bat", 65, CustomEntityBat_1_7_R1.class);
+			service = new Service_1_7_R1();
+			break;
+		case "1_7_R2": 
+			RegisterEntity_1_7_R2.registerEntity("Bat", 65, CustomEntityBat_1_7_R2.class);
+			service = new Service_1_7_R2();
+			break;
+		case "1_7_R3": 
+			RegisterEntity_1_7_R3.registerEntity("Bat", 65, CustomEntityBat_1_7_R3.class);
+			service = new Service_1_7_R3();
+			break;
+		case "1_7_R4": 
+			RegisterEntity_1_7_R4.registerEntity("Bat", 65, CustomEntityBat_1_7_R4.class);
+			service = new Service_1_7_R4();
+			break;
 		case "1_8_R1": 
 			RegisterEntity_1_8_R1.registerEntity("Bat", 65, CustomEntityBat_1_8_R1.class);
 			service = new Service_1_8_R1();

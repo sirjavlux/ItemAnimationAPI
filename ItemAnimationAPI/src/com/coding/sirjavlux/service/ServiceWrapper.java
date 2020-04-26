@@ -1,7 +1,6 @@
 package com.coding.sirjavlux.service;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +14,5 @@ public interface ServiceWrapper {
     public void setLocation(Player player, Entity entity, Location location);
     public void sendParticle(Player player, Location location, String particleName);
     public void playSound(Player player, String sound, int pitch);
-    public void changeChest(Player player, Block block, boolean open);
     public void explode(Player player, Location location);
 }
