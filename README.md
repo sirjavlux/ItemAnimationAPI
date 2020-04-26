@@ -20,3 +20,9 @@ Used for despawning moving item
 ```
 movingItem.despawn();
 ```
+
+Used for changing item
+
+```
+movingItem.setItemStack(ItemStack item);
+```
