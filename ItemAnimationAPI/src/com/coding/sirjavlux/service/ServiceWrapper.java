@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.coding.sirjavlux.core.MovingItem;
 import com.coding.sirjavlux.entity.CustomEntityBat;
 
 public interface ServiceWrapper {
@@ -15,4 +16,5 @@ public interface ServiceWrapper {
     public void sendParticle(Player player, Location location, String particleName);
     public void playSound(Player player, String sound, int pitch);
     public void explode(Player player, Location location);
+    public void setItemStack(MovingItem item);
 }

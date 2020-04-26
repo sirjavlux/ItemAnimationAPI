@@ -39,4 +39,17 @@ public class MovingItem {
     public MovingItem clone() {
         return new MovingItem(p, item, bat);
     }
+    
+    public void setItemStack(ItemStack item) {
+    	this.item.setItemStack(item);
+    	Main.getVersionManager().getService().setItemStack(this);
+    }
+    
+    public Item getItem() {
+    	return item;
+    }
+    
+    public Player getPlayer() {
+    	return p;
+    }
 }

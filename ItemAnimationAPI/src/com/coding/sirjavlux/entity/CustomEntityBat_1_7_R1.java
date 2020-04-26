@@ -33,6 +33,7 @@ public class CustomEntityBat_1_7_R1 extends EntityBat implements CustomEntityBat
     @Override
     public void e(final NBTTagCompound nbttagcompound) {
     }
+    
     @Override
     public void makeSound(final String sound, final float f1, final float f2) {
     }

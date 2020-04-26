@@ -10,9 +10,12 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.coding.sirjavlux.core.MovingItem;
 import com.coding.sirjavlux.entity.CustomEntityBat;
 import com.coding.sirjavlux.entity.CustomEntityBat_1_8_R3;
 
+import net.minecraft.server.v1_8_R3.EntityItem;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import net.minecraft.server.v1_8_R3.*;
 
 public class Service_1_8_R3 implements ServiceWrapper {
@@ -29,6 +32,12 @@ public class Service_1_8_R3 implements ServiceWrapper {
         sendPacket(metadata, player);
 
         return bat;
+    }
+    @Override 
+    public void setItemStack(MovingItem mItem) {
+    	EntityItem item = (EntityItem) ((CraftEntity) mItem.getItem()).getHandle();
+        PacketPlayOutEntityMetadata metadata = new PacketPlayOutEntityMetadata(item.getId(), item.getDataWatcher(), true);
+        sendPacket(metadata, mItem.getPlayer());
     }
     @Override
     public org.bukkit.entity.Item spawnItem(Player player, ItemStack itemStack, Location location, CustomEntityBat bat) {
