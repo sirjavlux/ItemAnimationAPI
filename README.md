@@ -27,4 +27,4 @@ Used for changing item
 movingItem.setItemStack(ItemStack item);
 ```
 
-![](AnimationPreview.gif)
+![](GifsAndImages/AnimationPreview.gif)
