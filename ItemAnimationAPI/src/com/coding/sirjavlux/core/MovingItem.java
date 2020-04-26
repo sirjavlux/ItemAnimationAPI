@@ -14,8 +14,8 @@ public class MovingItem {
     private Player p;
     
     public MovingItem(Player p, ItemStack itemStack, Location location) {
-        this.bat = Main.getNMSService().spawnBat(p, location);
-        this.item = Main.getNMSService().spawnItem(p, itemStack.clone(), location, bat);
+        this.bat = Main.getVersionManager().getService().spawnBat(p, location);
+        this.item = Main.getVersionManager().getService().spawnItem(p, itemStack.clone(), location, bat);
         this.p = p;
     }
     
@@ -27,13 +27,13 @@ public class MovingItem {
 
 	public void despawn() {
 		if (p.isOnline()) {
-			Main.getNMSService().destroyEntity(p, item);
-			Main.getNMSService().destroyEntity(p, bat);	
+			Main.getVersionManager().getService().destroyEntity(p, item);
+			Main.getVersionManager().getService().destroyEntity(p, bat.getBukkitEntity());	
 		}
     }
 
     public void teleport(Location location) {
-    	if (p.isOnline()) Main.getNMSService().setLocation(p, bat, location);
+    	if (p.isOnline()) Main.getVersionManager().getService().setLocation(p, bat.getBukkitEntity(), location);
     }
 
     public MovingItem clone() {

@@ -1,41 +1,41 @@
-package com.coding.sirjavlux.core;
+package com.coding.sirjavlux.service;
 
-import net.minecraft.server.v1_8_R3.*;
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.coding.sirjavlux.entity.CustomEntityBat;
+import com.coding.sirjavlux.entity.CustomEntityBat_1_8_R1;
 
-import java.util.ArrayList;
+import net.minecraft.server.v1_8_R1.*;
 
-public class NMSService {
-
-    public static World getByBukkitWorld(org.bukkit.World world) {
-        return ((CraftWorld) world).getHandle();
-    }
-
+public class Service_1_8_R1 implements ServiceWrapper {
+    @Override
     public CustomEntityBat spawnBat(Player player, Location location) {
-        CustomEntityBat bat = new CustomEntityBat(location);
-        bat.setLocation(location.getX(), location.getY(), location.getZ(), 0, 0);
-        PacketPlayOutSpawnEntityLiving spawnEntity = new PacketPlayOutSpawnEntityLiving(bat);
+        CustomEntityBat bat = new CustomEntityBat_1_8_R1(location);
+        Entity entity = ((CraftEntity) bat.getBukkitEntity()).getHandle();
+        entity.setLocation(location.getX(), location.getY(), location.getZ(), 0, 0);
+        PacketPlayOutSpawnEntityLiving spawnEntity = new PacketPlayOutSpawnEntityLiving((EntityLiving) entity);
         sendPacket(spawnEntity, player);
 
-        bat.setInvisible(true);
-        PacketPlayOutEntityMetadata metadata = new PacketPlayOutEntityMetadata(bat.getId(), bat.getDataWatcher(), true);
+        entity.setInvisible(true);
+        PacketPlayOutEntityMetadata metadata = new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true);
         sendPacket(metadata, player);
 
         return bat;
     }
-
+    @Override
     public org.bukkit.entity.Item spawnItem(Player player, ItemStack itemStack, Location location, CustomEntityBat bat) {
         EntityItem item = new EntityItem(((CraftWorld) location.getWorld()).getHandle());
+        Entity entity = ((CraftEntity) bat.getBukkitEntity()).getHandle();
         item.setLocation(location.getX(), location.getY(), location.getZ(), 0, 0);
         item.setItemStack(CraftItemStack.asNMSCopy(itemStack));
         PacketPlayOutSpawnEntity spawnEntity = new PacketPlayOutSpawnEntity(item, 2, 1);
@@ -44,28 +44,24 @@ public class NMSService {
         PacketPlayOutEntityMetadata metadata = new PacketPlayOutEntityMetadata(item.getId(), item.getDataWatcher(), true);
         sendPacket(metadata, player);
 
-        bat.passenger = item;
-        PacketPlayOutAttachEntity attachEntity = new PacketPlayOutAttachEntity(0, item, bat);
+        entity.passenger = item;
+        PacketPlayOutAttachEntity attachEntity = new PacketPlayOutAttachEntity(0, item, entity);
         sendPacket(attachEntity, player);
         return (org.bukkit.entity.Item) item.getBukkitEntity();
     }
-
+    @Override
     public void destroyEntity(Player player, org.bukkit.entity.Entity entity) {
         PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(((CraftEntity) entity).getHandle().getId());
         sendPacket(destroy, player);
     }
-
-    public void destroyEntity(Player player, Entity entity) {
-        PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(entity.getId());
-        sendPacket(destroy, player);
-    }
-    
-    public void setLocation(Player player, Entity entity, Location location) {
+    @Override
+    public void setLocation(Player player, org.bukkit.entity.Entity entityBukkit, Location location) {
+    	Entity entity = ((CraftEntity) entityBukkit).getHandle();
         entity.setLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
         PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(entity);
         sendPacket(teleport, player);
     }
-
+    @Override
     public void sendParticle(Player player, Location location, String particleName) {
         PacketPlayOutWorldParticles particle = new PacketPlayOutWorldParticles(
                 EnumParticle.valueOf(particleName.toUpperCase()),
@@ -76,7 +72,7 @@ public class NMSService {
                 0, 0, 0, 1, 0);
         sendPacket(particle, player);
     }
-
+    @Override
     public void playSound(Player player, String sound, int pitch) {
         PacketPlayOutNamedSoundEffect soundEffect = new PacketPlayOutNamedSoundEffect(sound,
                 player.getLocation().getX(),
@@ -86,7 +82,7 @@ public class NMSService {
                 pitch);
         sendPacket(soundEffect, player);
     }
-
+    @Override
     public void changeChest(Player player, Block block, boolean open) {
         PacketPlayOutBlockAction blockAction = null;
         try {
@@ -104,7 +100,7 @@ public class NMSService {
 
         sendPacket(blockAction, player);
     }
-
+    @Override
     public void explode(Player player, Location location) {
         PacketPlayOutExplosion explosion = new PacketPlayOutExplosion(
                 location.getX(),
@@ -116,10 +112,8 @@ public class NMSService {
         );
         sendPacket(explosion, player);
     }
-
-    @SuppressWarnings("rawtypes")
-	private void sendPacket(Packet packet, Player player) {
+    
+	public void sendPacket(Packet packet, Player player) {
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
-
 }

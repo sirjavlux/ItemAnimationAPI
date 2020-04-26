@@ -1,4 +1,4 @@
-package com.coding.sirjavlux.entity;
+package com.coding.sirjavlux.registry;
 
 import net.minecraft.server.v1_8_R3.EntityInsentient;
 import net.minecraft.server.v1_8_R3.EntityTypes;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterEntity {
+public class RegisterEntity_1_8_R3 {
 
     public static void registerEntity(String name, int id, Class<? extends EntityInsentient> customClass) {
         try {
